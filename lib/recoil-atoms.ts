@@ -5,7 +5,7 @@ export const numberOfWords = atom({
   default: 10
 });
 
-export const wordList = atom({
-  key: 'wordList',
+export const wordChainList = atom<String[]>({
+  key: 'wordChainList',
   default: []
 });
