@@ -23,11 +23,11 @@ export const NumberOfWordsInput = () => {
     setNumWords(Number(valueString));
   };
   return (
-    <Flex direction="column" w="md" mt="5" p="10">
+    <Flex direction="column" w="md" mt={{ base: 0, md: '5' }} p="10">
       {console.log('rendered Child')}
       <FormControl>
-        <FormLabel>Pleas input the number of words to chain</FormLabel>
-        <NumberInput min={2} value={numWords} onChange={onChange}>
+        <FormLabel>Please input the number of words to chain</FormLabel>
+        <NumberInput value={numWords} onChange={onChange} min={2}>
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
@@ -42,8 +42,9 @@ export const NumberOfWordsInput = () => {
         colorScheme="teal"
         onClick={onClick}
         disabled={!(numWords > 1)}
+        fontSize="2xl"
       >
-        Play !!
+        Play
       </Button>
     </Flex>
   );

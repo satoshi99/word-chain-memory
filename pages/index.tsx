@@ -2,6 +2,7 @@ import {
   Box,
   Flex,
   Heading,
+  Icon,
   ListItem,
   OrderedList,
   Text
@@ -9,13 +10,15 @@ import {
 import type { NextPage } from 'next';
 import { Layout } from '../components/Layout';
 import { NumberOfWordsInput } from '../components/NumberOfWordsInput';
+import { GiBrain } from 'react-icons/gi';
 
 const Home: NextPage = () => {
   return (
     <Layout title="Home">
       {console.log('rendered App')}
-      <Flex direction="column" mt={{ base: '0', md: '10' }} align="center">
-        <Heading fontSize="4xl" color="teal.300">
+      <Flex direction="column" mt={{ base: '0', md: '5' }} align="center">
+        <Icon as={GiBrain} mb="5" fontSize="5xl" color="teal.300" />
+        <Heading fontSize="4xl" color="teal.300" fontFamily="times">
           Word Chain Memory
         </Heading>
         <Text fontSize={{ base: 'xl', md: '2xl' }} my="5">
