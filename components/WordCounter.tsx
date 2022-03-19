@@ -1,26 +1,30 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import {
+  CircularProgress,
+  CircularProgressLabel,
+  Flex,
+  Text
+} from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { numberOfWords, wordChainList } from '../lib/recoil-atoms';
 
 export const WordCounter = () => {
   const numWords = useRecoilValue(numberOfWords);
   const wordList = useRecoilValue(wordChainList);
-  const step = wordList.length;
+  const count = wordList.length;
 
   return (
-    <Flex
-      direction="column"
-      fontSize="2xl"
-      bgColor="teal.800"
-      shadow="2xl"
-      p="3"
-      position="absolute"
-      top="5"
-      left="5"
-    >
-      <Text>{step}</Text>
-      <Box w="14" borderBottom="1px" />
-      <Text>{numWords}</Text>
+    <Flex direction="column" position="absolute" top="5" left="5">
+      <CircularProgress
+        max={numWords}
+        value={count}
+        size="24"
+        color="teal.300"
+      />
+      <CircularProgressLabel fontSize="2xl">
+        <Text fontSize="4xl" color="teal.300">
+          {count}
+        </Text>
+      </CircularProgressLabel>
     </Flex>
   );
 };
