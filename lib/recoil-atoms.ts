@@ -1,7 +1,7 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 
 type GameStep = {
-  value: 'forward' | 'backward' | 'result';
+  value: 'chain' | 'recall' | 'result';
 };
 
 export const numberOfWords = atom({
@@ -14,12 +14,36 @@ export const wordChainList = atom<String[]>({
   default: []
 });
 
+export const copyWordChainList = selector({
+  key: 'copyWordChainList',
+  get: ({ get }) => {
+    const wordList = get(wordChainList);
+    return [...wordList];
+  }
+});
+
+export const wordChainListStats = selector({
+  key: 'wordChainListStats',
+  get: ({ get }) => {
+    const wordList = get(wordChainList);
+    return wordList.length;
+  }
+});
+
 export const recallWordList = atom<String[]>({
   key: 'recallWordList',
   default: []
 });
 
+export const recallWordListStats = selector({
+  key: 'recallWordListStats',
+  get: ({ get }) => {
+    const wordList = get(recallWordList);
+    return wordList.length + 1;
+  }
+});
+
 export const gameStep = atom<GameStep>({
   key: 'gameStep',
-  default: { value: 'forward' }
+  default: { value: 'chain' }
 });
