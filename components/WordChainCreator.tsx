@@ -3,35 +3,37 @@ import {
   Flex,
   Heading,
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
   useDisclosure
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { ChangeEvent, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { gameStep, numberOfWords, wordChainList } from '../lib/recoil-atoms';
+import {
+  gameStep,
+  numberOfWords,
+  wordChainList,
+  wordChainListStats
+} from '../lib/recoil-atoms';
+import { FinishModal } from './FinishModal';
 
 export const WordChainCreator = () => {
   const [inputValue, setInputValue] = useState('');
   const [lastWord, setLastWord] = useState('');
+
   const [wordList, setWordList] = useRecoilState(wordChainList);
-  const numWords = useRecoilValue(numberOfWords);
   const [step, setStep] = useRecoilState(gameStep);
+
+  const totalNumInList = useRecoilValue(wordChainListStats);
+  const numWords = useRecoilValue(numberOfWords);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const router = useRouter();
 
   const addWord = () => {
     setWordList([...wordList, inputValue]);
     setLastWord(inputValue);
     setInputValue('');
-    if (wordList.length + 1 === numWords) {
-      setStep({ value: 'backward' });
+    if (totalNumInList + 1 === numWords) {
+      setStep({ value: 'recall' });
       onOpen();
     }
   };
@@ -40,15 +42,14 @@ export const WordChainCreator = () => {
     setInputValue(e.target.value);
   };
 
-  const modalOnClick = () => {
-    router.push('memory');
-  };
-
   return (
-    <Flex direction="column" align="center">
+    <Flex direction="column" align="center" pt="32">
+      <Text>
+        Enter a word that begin from the first letter of the word below.
+      </Text>
       <Heading
         fontSize={{ base: '5xl', sm: '6xl', md: '7xl' }}
-        mt="36"
+        mt="5"
         mb="10"
         w="100vw"
       >
@@ -59,37 +60,13 @@ export const WordChainCreator = () => {
         <Button
           size="lg"
           colorScheme="teal"
-          onClick={step.value === 'forward' ? addWord : onOpen}
+          onClick={step.value === 'chain' ? addWord : onOpen}
           fontSize="2xl"
         >
-          {step.value === 'forward' ? 'Answer' : 'Next Game'}
+          {step.value === 'chain' ? 'Answer' : 'Next Game'}
         </Button>
       </Flex>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalContent>
-            <ModalHeader fontSize="3xl">Finish Word-Chain Game</ModalHeader>
-            <ModalBody>
-              <Text>
-                Next is the memory step. <br />
-                How many words do you remember them ?<br />
-                But you have to pick them up order by backward
-                <br />
-                Let&apos;s push the button to go to memory step
-              </Text>
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="gray" mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button colorScheme="teal" onClick={modalOnClick}>
-                Next
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </ModalContent>
-      </Modal>
+      <FinishModal isOpen={isOpen} onClose={onClose} />
     </Flex>
   );
 };

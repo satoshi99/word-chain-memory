@@ -22,7 +22,7 @@ const Home: NextPage = () => {
           Word Chain Memory
         </Heading>
         <Text fontSize={{ base: 'xl', md: '2xl' }} my="5">
-          Memory training with the word chain game
+          Memory training with the word-chain game
         </Text>
         <Box mx="auto" p="5" bgColor="whiteAlpha.200">
           <OrderedList textAlign="left" spacing={1} fontSize="xl">

@@ -4,14 +4,20 @@ import { Layout } from '../components/Layout';
 import { WordChainCreator } from '../components/WordChainCreator';
 import { Stack } from '@chakra-ui/react';
 import { WordCounter } from '../components/WordCounter';
+import { ResetAndBackTop } from '../components/ResetAndBackTop';
 import { useRecoilValue } from 'recoil';
+import { numberOfWords, wordChainListStats } from '../lib/recoil-atoms';
 
 const PlayWordChainPage: NextPage = () => {
+  const numWords = useRecoilValue(numberOfWords);
+  const totalNumInList = useRecoilValue(wordChainListStats);
+
   return (
     <Layout title="Word Chain Game">
       <Stack direction="column" align="center" justify="center">
-        <WordCounter />
+        <WordCounter value={totalNumInList} max={numWords} />
         <WordChainCreator />
+        <ResetAndBackTop />
       </Stack>
     </Layout>
   );
