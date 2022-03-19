@@ -5,7 +5,6 @@ import {
   Input,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -16,13 +15,14 @@ import {
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { numberOfWords, wordChainList } from '../lib/recoil-atoms';
+import { gameStep, numberOfWords, wordChainList } from '../lib/recoil-atoms';
 
 export const WordChainCreator = () => {
   const [inputValue, setInputValue] = useState('');
   const [lastWord, setLastWord] = useState('');
   const [wordList, setWordList] = useRecoilState(wordChainList);
   const numWords = useRecoilValue(numberOfWords);
+  const [step, setStep] = useRecoilState(gameStep);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
@@ -31,6 +31,7 @@ export const WordChainCreator = () => {
     setLastWord(inputValue);
     setInputValue('');
     if (wordList.length + 1 === numWords) {
+      setStep({ value: 'backward' });
       onOpen();
     }
   };
@@ -55,24 +56,34 @@ export const WordChainCreator = () => {
       </Heading>
       <Flex direction="column" gap="2" w={{ base: 'sm', md: 'lg' }}>
         <Input type="text" value={inputValue} onChange={onChange} size="lg" />
-        <Button size="lg" colorScheme="teal" onClick={addWord} fontSize="2xl">
-          Answer
+        <Button
+          size="lg"
+          colorScheme="teal"
+          onClick={step.value === 'forward' ? addWord : onOpen}
+          fontSize="2xl"
+        >
+          {step.value === 'forward' ? 'Answer' : 'Next Game'}
         </Button>
       </Flex>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalContent>
-            <ModalHeader>Finish Game</ModalHeader>
-            <ModalCloseButton />
+            <ModalHeader fontSize="3xl">Finish Word-Chain Game</ModalHeader>
             <ModalBody>
-              <Text>finish game and then next step</Text>
+              <Text>
+                Next is the memory step. <br />
+                How many words do you remember them ?<br />
+                But you have to pick them up order by backward
+                <br />
+                Let&apos;s push the button to go to memory step
+              </Text>
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
+              <Button colorScheme="gray" mr={3} onClick={onClose}>
                 Close
               </Button>
-              <Button variant="ghost" onClick={modalOnClick}>
+              <Button colorScheme="teal" onClick={modalOnClick}>
                 Next
               </Button>
             </ModalFooter>
