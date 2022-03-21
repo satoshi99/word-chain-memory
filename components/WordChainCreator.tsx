@@ -12,7 +12,7 @@ import {
   gameStep,
   numberOfWords,
   wordChainList,
-  wordChainListStats
+  chainListLength
 } from '../lib/recoil-atoms';
 import { FinishModal } from './FinishModal';
 
@@ -23,7 +23,7 @@ export const WordChainCreator = () => {
   const [wordList, setWordList] = useRecoilState(wordChainList);
   const [step, setStep] = useRecoilState(gameStep);
 
-  const totalNumInList = useRecoilValue(wordChainListStats);
+  const totalNumInList = useRecoilValue(chainListLength);
   const numWords = useRecoilValue(numberOfWords);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
