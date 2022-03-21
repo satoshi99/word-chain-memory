@@ -14,16 +14,8 @@ export const wordChainList = atom<String[]>({
   default: []
 });
 
-export const copyWordChainList = selector({
-  key: 'copyWordChainList',
-  get: ({ get }) => {
-    const wordList = get(wordChainList);
-    return [...wordList];
-  }
-});
-
-export const wordChainListStats = selector({
-  key: 'wordChainListStats',
+export const chainListLength = selector({
+  key: 'chainListLength',
   get: ({ get }) => {
     const wordList = get(wordChainList);
     return wordList.length;
@@ -35,11 +27,11 @@ export const recallWordList = atom<String[]>({
   default: []
 });
 
-export const recallWordListStats = selector({
-  key: 'recallWordListStats',
+export const recallListLength = selector({
+  key: 'recallListLength',
   get: ({ get }) => {
     const wordList = get(recallWordList);
-    return wordList.length + 1;
+    return wordList.length;
   }
 });
 
