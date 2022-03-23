@@ -8,5 +8,4 @@ Memory training with the word-chain game
 - Play the word-chain game by oneself for selected number of words.
 - Then try to recall the words you have chained in reverse order.
 
-Let's try this game !!
-URL: https://word-chain-memory.vercel.app/
+[Let's play this game !!](https://word-chain-memory.vercel.app/)
