@@ -15,28 +15,29 @@ import { GiBrain } from 'react-icons/gi';
 const Home: NextPage = () => {
   return (
     <Layout title="Home">
-      {console.log('rendered App')}
-      <Flex direction="column" mt={{ base: '0', md: '5' }} align="center">
+      <Flex
+        direction="column"
+        w="full"
+        mt={{ base: '0', md: '5' }}
+        align="center"
+      >
         <Icon as={GiBrain} mb="5" fontSize="5xl" color="teal.300" />
-        <Heading fontSize="4xl" color="teal.300" fontFamily="times">
+        <Heading fontSize="3xl" color="teal.300" fontFamily="times">
           Word Chain Memory
         </Heading>
-        <Text fontSize={{ base: 'xl', md: '2xl' }} my="5">
+        <Text fontSize={{ base: 'sm', md: '2xl' }} my="5">
           Memory training with the word-chain game
         </Text>
-        <Box mx="auto" p="5" bgColor="whiteAlpha.200">
+        <Box p="5" bgColor="whiteAlpha.200">
           <OrderedList textAlign="left" spacing={1} fontSize="xl">
             <ListItem>
-              Select number of words to play the taking-the-end.
+              Select number of words to play the word-chain game.
             </ListItem>
             <ListItem>
-              Play the taking-the-end by oneself for selected number of words.
+              Play the word-chain game by oneself for selected number of words.
             </ListItem>
             <ListItem>
-              Select number of words to play the taking-the-end.
-            </ListItem>
-            <ListItem>
-              Select number of words to play the taking-the-end.
+              Then try to recall the words you have chained in reverse order.{' '}
             </ListItem>
           </OrderedList>
         </Box>

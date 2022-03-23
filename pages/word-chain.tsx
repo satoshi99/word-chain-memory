@@ -7,18 +7,21 @@ import { WordCounter } from '../components/WordCounter';
 import { ResetAndBackTop } from '../components/ResetAndBackTop';
 import { useRecoilValue } from 'recoil';
 import { numberOfWords, chainListLength } from '../lib/recoil-atoms';
+import { ChainNav } from '../components/ChainNav';
 
 const PlayWordChainPage: NextPage = () => {
   const numWords = useRecoilValue(numberOfWords);
-  const totalNumInList = useRecoilValue(chainListLength);
+  const chainLength = useRecoilValue(chainListLength);
 
   return (
     <Layout title="Word Chain Game">
+      {console.log('rendered word-chain page')}
       <Stack direction="column" align="center" justify="center">
-        <WordCounter value={totalNumInList} max={numWords} />
+        <WordCounter value={chainLength} max={numWords} />
+        <ChainNav />
         <WordChainCreator />
-        <ResetAndBackTop />
       </Stack>
+      <ResetAndBackTop />
     </Layout>
   );
 };

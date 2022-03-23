@@ -16,22 +16,24 @@ import {
   numberOfWords,
   recallWordList,
   wordChainList,
-  recallListLength
+  totalMistakeNum,
+  chainListLength
 } from '../lib/recoil-atoms';
 import { FinishModal } from '../components/FinishModal';
 import { ResetAndBackTop } from '../components/ResetAndBackTop';
 
 const PlayRecallPage: NextPage = () => {
-  const [missCount, setMissCount] = useState(0);
+  const [mistakes, setMistakes] = useState(0);
+  const [totalMistakes, setTotalMistakes] = useRecoilState(totalMistakeNum);
   const [inputValue, setInputValue] = useState('');
 
   const chainList = useRecoilValue(wordChainList);
-  const [lastIdx, setLastIdx] = useState(chainList.length - 1);
+  const chainLength = useRecoilValue(chainListLength);
+  const [lastIdx, setLastIdx] = useState(chainLength - 1);
   const [lastWord, setLastWord] = useState(chainList[lastIdx]);
 
   const [step, setStep] = useRecoilState(gameStep);
   const numWords = useRecoilValue(numberOfWords);
-  const recallLength = useRecoilValue(recallListLength);
   const [recallList, setRecallList] = useRecoilState(recallWordList);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,33 +44,43 @@ const PlayRecallPage: NextPage = () => {
 
   const correctWord = chainList[lastIdx - 1];
 
+  if (!recallList.length) {
+    setRecallList([...recallList, lastWord]);
+  }
+
+  const gameOver = () => {
+    if (recallList.length + 1 === chainLength) {
+      setStep({ value: 'result' });
+      onOpen();
+    }
+  };
+
   const onClick = () => {
     if (inputValue === correctWord) {
       setRecallList([...recallList, inputValue]);
       setLastWord(inputValue);
       setLastIdx(lastIdx - 1);
       setInputValue('');
-      setMissCount(0);
+      setTotalMistakes(totalMistakes + mistakes);
+      setMistakes(0);
+      gameOver();
     } else {
-      setMissCount(missCount + 1);
-      if (missCount === 4) {
-        setRecallList([...recallList, 'miss']);
+      setMistakes(mistakes + 1);
+      if (mistakes === 4) {
+        setRecallList([...recallList, 'incorrect']);
         setLastWord(correctWord);
         setLastIdx(lastIdx - 1);
         setInputValue('');
-        setMissCount(0);
+        setTotalMistakes(totalMistakes + mistakes);
+        setMistakes(0);
+        gameOver();
       }
-    }
-
-    if (lastIdx === 1) {
-      setStep({ value: 'result' });
-      onOpen();
     }
   };
 
   return (
     <Layout title="Memory">
-      <WordCounter value={recallLength + 1} max={numWords} />
+      <WordCounter value={recallList.length} max={numWords} />
       <Flex direction="column" align="center" pt="32">
         <Text>
           Enter the word chained to the word below.
@@ -95,8 +107,8 @@ const PlayRecallPage: NextPage = () => {
           </Button>
         </Flex>
         <FinishModal isOpen={isOpen} onClose={onClose} />
-        <ResetAndBackTop />
       </Flex>
+      <ResetAndBackTop />
     </Layout>
   );
 };
